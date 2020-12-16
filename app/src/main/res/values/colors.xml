@@ -5,6 +5,17 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <color name="loadingBackground">#55000000</color>
+
+    <color name="addressTextColor">#A8A5A5</color>
+    <color name="laundryNameTextColor">#406AA3</color>
+    <color name="overlayPanelColor">#D0D9D9D9</color>
+
+    <color name="registrationCondition">#918DFF</color>
+
+    <color name="switchActivate">#004AAD</color>
+    <color name="switchBackground">#7CCAFF</color>
+
+    <color name="drawerBackground">#F5F9FF</color>
 </resources>

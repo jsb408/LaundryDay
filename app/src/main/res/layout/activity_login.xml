@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:id="@+id/imageLoginLogo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="95dp"
+        android:layout_marginEnd="90dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/laundryday_logo" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="62dp"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="62dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageLoginLogo">
+
+        <Button
+            android:id="@+id/buttonLoginKakao"
+            style="@style/LoginButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="카카오로 로그인"
+            android:textColor="@android:color/black"
+            app:backgroundTint="#fcdc35"/>
+
+        <Button
+            android:id="@+id/buttonLoginNaver"
+            style="@style/LoginButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="네이버로 로그인"
+            app:backgroundTint="#44b65f"/>
+
+        <Button
+            android:id="@+id/buttonLoginGoogle"
+            style="@style/LoginButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="구글로 로그인"
+            android:textColor="@android:color/black"
+            app:backgroundTint="#ffffff"/>
+
+        <Button
+            android:id="@+id/buttonLoginEmail"
+            style="@style/LoginButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이메일로 로그인"
+            app:backgroundTint="#004aad"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="92dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/labelLoginRegistrationInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="런드리데이에 처음 오셨나요?"
+            android:textColor="@color/addressTextColor" />
+
+        <TextView
+            android:id="@+id/labelLoginRegistration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="회원가입"
+            android:textColor="@color/switchActivate" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

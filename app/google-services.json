@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "743907259584",
+    "project_id": "laundryday-e3d32",
+    "storage_bucket": "laundryday-e3d32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743907259584:android:e9d9fb6dd0dd34c3276925",
+        "android_client_info": {
+          "package_name": "com.goldouble.android.laundryday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "743907259584-d4r9dk8v6s2jlqta841b9e80mo0h8v41.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6vUWtsNWSDBwIYjmoYH0DVkw7Ypm4o90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743907259584-d4r9dk8v6s2jlqta841b9e80mo0h8v41.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "743907259584-sgcda6kqlu58lun661pebqdm8oi740e7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kang.LaundryDay"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

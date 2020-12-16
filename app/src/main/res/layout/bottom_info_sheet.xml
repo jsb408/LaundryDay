@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    app:behavior_peekHeight="150dp"
+    app:behavior_hideable="true"
+    app:cardCornerRadius="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/imageMainBookmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="22dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_favorite_24" />
+
+        <TextView
+            android:id="@+id/textMainName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="크린셀프세탁소"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageMainBookmark"
+            app:layout_constraintStart_toEndOf="@+id/imageMainBookmark"
+            app:layout_constraintTop_toTopOf="@+id/imageMainBookmark" />
+
+        <ImageView
+            android:id="@+id/imageMainPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageMainMap"
+            app:layout_constraintEnd_toStartOf="@+id/imageMainMap"
+            app:layout_constraintTop_toTopOf="@+id/imageMainMap"
+            app:srcCompat="@drawable/ic_baseline_phone_24" />
+
+        <ImageView
+            android:id="@+id/imageMainMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageMainBookmark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageMainBookmark"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/ic_baseline_map_24" />
+
+        <ImageView
+            android:id="@+id/imageMainMarker"
+            android:layout_width="18dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="@+id/imageMainBookmark"
+            app:layout_constraintTop_toBottomOf="@+id/textMainName"
+            app:srcCompat="@drawable/marker_coin" />
+
+        <TextView
+            android:id="@+id/textMainDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="600m"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageMainMarker"
+            app:layout_constraintStart_toEndOf="@+id/imageMainMarker"
+            app:layout_constraintTop_toTopOf="@+id/imageMainMarker" />
+
+        <TextView
+            android:id="@+id/textMainAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="16dp"
+            android:text="경기도 용인시 수지구 풍덕천로 171번길 5"
+            android:textColor="@color/addressTextColor"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textMainDistance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/textMainDistance" />
+
+        <TextView
+            android:id="@+id/textMainAvgRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:text="5.0"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/imageMainMarker"
+            app:layout_constraintTop_toBottomOf="@+id/textMainAddress" />
+
+        <RatingBar
+            android:id="@+id/ratingBarMain"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:max="50"
+            android:progress="47"
+            app:layout_constraintBottom_toBottomOf="@+id/textMainAvgRating"
+            app:layout_constraintStart_toEndOf="@+id/textMainAvgRating"
+            app:layout_constraintTop_toTopOf="@+id/textMainAvgRating" />
+
+        <TextView
+            android:id="@+id/textMainCountRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:text="(1)"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textMainAvgRating"
+            app:layout_constraintStart_toEndOf="@+id/ratingBarMain"
+            app:layout_constraintTop_toTopOf="@+id/textMainAvgRating" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardViewStoreList"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="9dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageStoreItemFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="22dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_favorite_24" />
+
+        <TextView
+            android:id="@+id/textStoreItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="TextView"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageStoreItemFavorite"
+            app:layout_constraintStart_toEndOf="@+id/imageStoreItemFavorite"
+            app:layout_constraintTop_toTopOf="@+id/imageStoreItemFavorite"
+            tools:text="크린셀프세탁소" />
+
+        <ImageView
+            android:id="@+id/imageStoreItemCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="9dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageStoreItemMap"
+            app:layout_constraintEnd_toStartOf="@+id/imageStoreItemMap"
+            app:layout_constraintTop_toTopOf="@+id/imageStoreItemMap"
+            app:srcCompat="@drawable/ic_baseline_phone_24" />
+
+        <ImageView
+            android:id="@+id/imageStoreItemMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="22dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageStoreItemFavorite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageStoreItemFavorite"
+            app:srcCompat="@drawable/ic_baseline_map_24" />
+
+        <ImageView
+            android:id="@+id/iconStoreItemCoin"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            app:layout_constraintStart_toStartOf="@+id/imageStoreItemFavorite"
+            app:layout_constraintTop_toBottomOf="@+id/textStoreItemName"
+            app:srcCompat="@drawable/marker_coin" />
+
+        <TextView
+            android:id="@+id/textStoreItemDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="600m"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iconStoreItemCoin"
+            app:layout_constraintStart_toEndOf="@+id/iconStoreItemCoin"
+            app:layout_constraintTop_toTopOf="@+id/iconStoreItemCoin" />
+
+        <TextView
+            android:id="@+id/textStoreItemAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="16dp"
+            android:text="경기도 용인시 수지구 풍덕천로 171번길 5"
+            android:textColor="@color/addressTextColor"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textStoreItemDistance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/textStoreItemDistance" />
+
+        <TextView
+            android:id="@+id/textStoreItemRatingAvg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="16dp"
+            android:text="5.0"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/iconStoreItemCoin"
+            app:layout_constraintTop_toBottomOf="@+id/textStoreItemAddress" />
+
+        <RatingBar
+            android:id="@+id/ratingBarStroeItem"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textStoreItemRatingAvg"
+            app:layout_constraintStart_toEndOf="@+id/textStoreItemRatingAvg"
+            app:layout_constraintTop_toTopOf="@+id/textStoreItemRatingAvg" />
+
+        <TextView
+            android:id="@+id/textStoreItemRatingCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:text="(1)"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingBarStroeItem"
+            app:layout_constraintStart_toEndOf="@+id/ratingBarStroeItem"
+            app:layout_constraintTop_toTopOf="@+id/ratingBarStroeItem" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

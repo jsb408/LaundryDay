@@ -1,11 +1,16 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
+
+    buildFeatures {
+        viewBinding = true
+    }
 
     defaultConfig {
         applicationId "com.goldouble.android.laundryday"
@@ -33,13 +38,31 @@ android {
 }
 
 dependencies {
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
+    implementation 'androidx.activity:activity-ktx:1.2.0-beta02'
+    implementation 'androidx.fragment:fragment-ktx:1.3.0-beta02'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
+
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+
+    //Naver Map API
+    implementation 'com.naver.maps:map-sdk:3.10.0'
+    implementation 'gun0912.ted:tedclustering-naver:1.0.2'
+
+    //Google Firebase
+    implementation platform('com.google.firebase:firebase-bom:26.1.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
+    //Firebase UI
+    implementation 'com.firebaseui:firebase-ui-firestore:7.1.1'
 }

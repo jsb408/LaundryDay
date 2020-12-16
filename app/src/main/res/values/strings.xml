@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">LaundryDay</string>
+
+    <string name="washingURL">http://openapi.seoul.go.kr:8088/55476e4b4a6b67753837474c566252/json/LOCALDATA_062001/</string>
+    <string name="washingAPIKey">55476e4b4a6b67753837474c566252</string>
+
+    <string name="naverMapClientID">dpbl53n4eo</string>
 </resources>
