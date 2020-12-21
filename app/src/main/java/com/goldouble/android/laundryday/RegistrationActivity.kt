@@ -53,9 +53,10 @@ class RegistrationActivity : AppCompatActivity() {
                                 userProfileChangeRequest {
                                     displayName = editTextRegistrationName.text.toString()
                                 }).addOnSuccessListener { _ -> //성공하면
-                                kFirestore.collection(kTable.MEMBERS.id).document(user.user!!.email!!).set(
+                                kFirestore.collection(Table.MEMBERS.id).document(user.user!!.email!!).set(
                                     hashMapOf(
                                         "uid" to user.user!!.uid,
+                                        "nickname" to binding.editTextRegistrationName.text.toString(),
                                         "type" to if(binding.radioGroupRegistrationType.checkedRadioButtonId == R.id.radioRegistrationNormal) "0001" else "0002",
                                         "email" to user.user!!.email!!
                                     )

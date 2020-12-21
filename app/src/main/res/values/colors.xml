@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-
     <color name="loadingBackground">#55000000</color>
 
     <color name="addressTextColor">#A8A5A5</color>
@@ -18,4 +12,10 @@
     <color name="switchBackground">#7CCAFF</color>
 
     <color name="drawerBackground">#F5F9FF</color>
+    <color name="detailBackground">#F6F6FA</color>
+    <color name="detailTitleTextColor">#0C52B0</color>
+    <color name="detailSubTextColor">#B5B5B5</color>
+
+    <color name="bottomButtonColor">#0c52b0</color>
+    <color name="reviewSubTextColor">#717171</color>
 </resources>

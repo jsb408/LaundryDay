@@ -187,9 +187,9 @@
 
     <Button
         android:id="@+id/buttonRegistration"
-        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        style="@style/BottomButtonStyle"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:text="가입하기"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

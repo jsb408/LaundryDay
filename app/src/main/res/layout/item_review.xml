@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="1dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textReviewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="4dp"
+            android:text="kg***"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RatingBar
+            android:id="@+id/ratingBarReview"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            android:max="5"
+            android:rating="0.5"
+            app:layout_constraintBottom_toBottomOf="@+id/textReviewName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textReviewName" />
+
+        <TextView
+            android:id="@+id/textReviewContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="시설이 좋고 저렴해요 "
+            app:layout_constraintEnd_toEndOf="@+id/ratingBarReview"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textReviewName"
+            app:layout_constraintTop_toBottomOf="@+id/textReviewName" />
+
+        <TextView
+            android:id="@+id/textReviewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="10dp"
+            android:text="10시간 전"
+            android:textColor="@color/reviewSubTextColor"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textReviewContent"
+            app:layout_constraintTop_toBottomOf="@+id/textReviewContent" />
+
+        <TextView
+            android:id="@+id/labelReviewThumbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:text="공감해요"
+            android:textColor="@color/reviewSubTextColor"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textReviewTime"
+            app:layout_constraintStart_toEndOf="@+id/textReviewTime" />
+
+        <TextView
+            android:id="@+id/textReviewThumbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:text="0"
+            android:textColor="@color/reviewSubTextColor"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/labelReviewThumbs"
+            app:layout_constraintStart_toEndOf="@+id/labelReviewThumbs" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

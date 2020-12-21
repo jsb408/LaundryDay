@@ -16,5 +16,8 @@ data class LaundryData(
         val type: String = "0001",
         val writer: String? = null
 ) {
-    var distance = 0.0
+        var id = ""
+
+        fun distance(location: Location?) = distance(LatLng(location?.latitude ?: 0.0, location?.longitude ?: 0.0))
+        fun distance(location: LatLng) = location.distanceTo(LatLng(latLng.latitude, latLng.longitude))
 }
