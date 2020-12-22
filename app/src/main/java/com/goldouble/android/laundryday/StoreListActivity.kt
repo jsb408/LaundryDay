@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.goldouble.android.laundryday.adapter.MyStoreListRecyclerViewAdapter
 import com.goldouble.android.laundryday.adapter.StoreListRecyclerViewAdapter
 import com.goldouble.android.laundryday.databinding.ActivityStoreListBinding
+import com.goldouble.android.laundryday.db.RealmLaundry
 import com.naver.maps.geometry.LatLng
 
 class StoreListActivity : AppCompatActivity() {
@@ -16,12 +18,13 @@ class StoreListActivity : AppCompatActivity() {
         binding = ActivityStoreListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title = "내근처 세탁소"
+        supportActionBar?.title = intent.getStringExtra("title") ?: "내근처 세탁소"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val currentLatLng = LatLng(intent.getDoubleExtra("lat", 37.4979), intent.getDoubleExtra("lng", 127.0276))
 
-        binding.recyclerViewStoreList.adapter = StoreListRecyclerViewAdapter(currentLatLng)
+        binding.recyclerViewStoreList.adapter = if(intent.getStringExtra("type").isNullOrBlank()) StoreListRecyclerViewAdapter(currentLatLng)
+        else MyStoreListRecyclerViewAdapter(currentLatLng, kRealm(intent.getStringExtra("type")!!).where(RealmLaundry::class.java).findAll().sortedByDescending { it.time })
         binding.recyclerViewStoreList.layoutManager = LinearLayoutManager(this)
     }
 

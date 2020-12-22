@@ -33,6 +33,7 @@ import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import ted.gun0912.clustering.naver.TedNaverClustering
 import java.text.DecimalFormat
+import java.util.*
 import kotlin.math.min
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -86,8 +87,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             kRealm(RealmTable.RECENT).addChangeListener { bindDrawer(locationSource.lastLocation) }
         }
 
-        binding.contentMain.bottomSheetMain.imageMainBookmark.setOnClickListener {
-            (it as ImageView).setColorFilter(getColor(R.color.switchActivate))
+        binding.drawerMain.buttonDrawerBookmarksCount.setOnClickListener {
+            startActivity(Intent(this, StoreListActivity::class.java)
+                    .putExtra("title", RealmTable.BOOKMARK.title)
+                    .putExtra("type", RealmTable.BOOKMARK.table)
+                    .putExtra("lat", locationSource.lastLocation?.latitude)
+                    .putExtra("lng", locationSource.lastLocation?.longitude))
+        }
+
+        binding.drawerMain.buttonDrawerRecentViewCount.setOnClickListener {
+            startActivity(Intent(this, StoreListActivity::class.java)
+                    .putExtra("title", RealmTable.RECENT.title)
+                    .putExtra("type", RealmTable.RECENT.table)
+                    .putExtra("lat", locationSource.lastLocation?.latitude)
+                    .putExtra("lng", locationSource.lastLocation?.longitude))
         }
 
         kAuth.currentUser?.let {
@@ -112,6 +125,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.drawerMain.buttonDrawerMyReview.setTextColor(getColor(R.color.addressTextColor))
             binding.drawerMain.buttonDrawerReport.setTextColor(getColor(R.color.addressTextColor))
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        bindDrawer(locationSource.lastLocation)
     }
 
     @UiThread
@@ -162,23 +180,41 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 }
                             }
 
-                            markerClickListener {
+                            markerClickListener { naverItem ->
+                                var isMarked = kRealm(RealmTable.BOOKMARK).where(RealmLaundry::class.java)
+                                        .equalTo("id", naverItem.data.id).findAll().isNotEmpty()
+                                binding.contentMain.bottomSheetMain.imageMainBookmark.setColorFilter(
+                                        getColor(if(isMarked) R.color.switchActivate else R.color.addressTextColor)
+                                )
+
+                                binding.contentMain.bottomSheetMain.imageMainBookmark.setOnClickListener { icon ->
+                                    if(isMarked) {
+                                        (icon as ImageView).setColorFilter(getColor(R.color.addressTextColor))
+                                        kDeleteBookmark(naverItem.data.id)
+                                    } else {
+                                        (icon as ImageView).setColorFilter(getColor(R.color.switchActivate))
+                                        kAddBookamrk(naverItem.data.id)
+                                    }
+
+                                    isMarked = !isMarked
+                                }
+
                                 binding.contentMain.bottomSheetMain.apply {
-                                    textMainName.text = it.data.name
-                                    textMainAddress.text = it.data.address
-                                    textMainDistance.text = distanceText(it.data.distance(locationSource.lastLocation))
+                                    textMainName.text = naverItem.data.name
+                                    textMainAddress.text = naverItem.data.address
+                                    textMainDistance.text = distanceText(naverItem.data.distance(locationSource.lastLocation))
                                 }
                                 binding.contentMain.bottomSheetMain.cardViewMain.setOnClickListener { _ ->
                                     startActivity(Intent(binding.root.context, StoreDetailActivity::class.java)
-                                            .putExtra("storeId", it.data.id))
+                                            .putExtra("storeId", naverItem.data.id))
                                 }
                                 binding.contentMain.bottomSheetMain.imageMainPhone.setOnClickListener { _ ->
-                                    startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${it.data.number}")))
+                                    startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${naverItem.data.number}")))
                                 }
                                 binding.contentMain.bottomSheetMain.imageMainMap.setOnClickListener { _ ->
-                                    val latLng = it.data.latLng
+                                    val latLng = naverItem.data.latLng
                                     try {
-                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("nmaps://route/public?dlat=${latLng.latitude}&dlng=${latLng.longitude}&dname=${it.data.name}&appname=$packageName")))
+                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("nmaps://route/public?dlat=${latLng.latitude}&dlng=${latLng.longitude}&dname=${naverItem.data.name}&appname=$packageName")))
                                     } catch (e: Exception) {
                                         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=${latLng.latitude},${latLng.longitude}")))
                                     }
@@ -220,17 +256,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun bindDrawer(location: Location?) = bindDrawer(location?.let { LatLng(it) } ?: LatLng(0.0, 0.0))
 
     private fun bindDrawer(location: LatLng) {
-        val data = kRealm(RealmTable.RECENT).where(RealmLaundry::class.java).findAll().sortedByDescending { it.time }
+        val bookmarksData = kRealm(RealmTable.BOOKMARK).where(RealmLaundry::class.java).findAll()
+        val bookmark = bookmarksData.maxByOrNull { it.time }
+        val recentViewData = kRealm(RealmTable.RECENT).where(RealmLaundry::class.java).findAll().sortedByDescending { it.time }
 
-        val recentViewCount = "${data.size} >"
-        binding.drawerMain.buttonDrawerRecentViewCount.text = recentViewCount
-        binding.drawerMain.layoutDrawerRecentView.removeAllViews()
+        bookmark?.let { data ->
+            val bookmarkCount = "${bookmarksData.size} >"
+            binding.drawerMain.buttonDrawerBookmarksCount.text = bookmarkCount
+            binding.drawerMain.layoutDrawerBookmarks.removeAllViews()
 
-        for(i in 0..min(data.size - 1, 2)) {
             val drawerBinding = ItemDrawerMainBinding.bind(layoutInflater.inflate(R.layout.item_drawer_main, null).also { view ->
                 view.layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
                 ).apply {
                     leftMargin = kIntToDp(20)
                     rightMargin = kIntToDp(20)
@@ -239,7 +277,42 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             })
 
-            kFirestore.collection(Table.LAUNDRY.id).document(data[i].id).get().addOnSuccessListener {
+            kFirestore.collection(Table.LAUNDRY.id).document(data.id).get().addOnSuccessListener {
+                drawerBinding.apply {
+                    textDrawerName.text = it.getString("name")
+                    textDrawerAddress.text = it.getString("address")
+                    textDrawerDistance.text = distanceText(location.distanceTo(geoPointToLatLng(it.getGeoPoint("latLng"))))
+                    cardViewItemDrawer.setOnClickListener { _ ->
+                        startActivity(Intent(this@MainActivity, StoreDetailActivity::class.java)
+                                .putExtra("storeId", it.id))
+                    }
+                    buttonDrawerCall.setOnClickListener { _ ->
+                        startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${it.getString("number")}")))
+                    }
+                }
+            }
+
+            binding.drawerMain.layoutDrawerBookmarks.addView(drawerBinding.root)
+        }
+
+        val recentViewCount = "${recentViewData.size} >"
+        binding.drawerMain.buttonDrawerRecentViewCount.text = recentViewCount
+        binding.drawerMain.layoutDrawerRecentView.removeAllViews()
+
+        for(i in 0..min(recentViewData.size - 1, 2)) {
+            val drawerBinding = ItemDrawerMainBinding.bind(layoutInflater.inflate(R.layout.item_drawer_main, null).also { view ->
+                view.layoutParams = LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                ).apply {
+                    leftMargin = kIntToDp(20)
+                    rightMargin = kIntToDp(20)
+                    topMargin = kIntToDp(5)
+                    bottomMargin = kIntToDp(5)
+                }
+            })
+
+            kFirestore.collection(Table.LAUNDRY.id).document(recentViewData[i].id).get().addOnSuccessListener {
                 drawerBinding.apply {
                     textDrawerName.text = it.getString("name")
                     textDrawerAddress.text = it.getString("address")

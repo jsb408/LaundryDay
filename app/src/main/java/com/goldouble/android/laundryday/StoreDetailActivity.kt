@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,14 +33,19 @@ class StoreDetailActivity : AppCompatActivity() {
         supportActionBar?.title = "세탁소 정보"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val itemId = intent.getStringExtra("storeId")!!
         Log.d("DETAIL", intent.getStringExtra("storeId").toString())
         
-        kFirestore.collection(Table.LAUNDRY.id).document(intent.getStringExtra("storeId")!!).get().addOnSuccessListener {
+        kFirestore.collection(Table.LAUNDRY.id).document(itemId).get().addOnSuccessListener {
             kRealm(RealmTable.RECENT).apply {
                 beginTransaction()
-                createObject(RealmLaundry::class.java).apply {
-                    id = it.id
-                    time = Date()
+                where(RealmLaundry::class.java).equalTo("id", it.id).findFirst()?.let {
+                    it.time = Date()
+                } ?: run {
+                    createObject(RealmLaundry::class.java).apply {
+                        id = it.id
+                        time = Date()
+                    }
                 }
                 commitTransaction()
             }
@@ -48,7 +54,7 @@ class StoreDetailActivity : AppCompatActivity() {
                 kAuth.currentUser?.let { _ ->
                     startActivity(Intent(this, WriteReviewActivity::class.java)
                         .putExtra("storeName", it.getString("name"))
-                        .putExtra("storeId", intent.getStringExtra("storeId")))
+                        .putExtra("storeId", itemId))
                 } ?: run {
                     AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
                         .setTitle("로그인이 필요합니다")
@@ -66,6 +72,24 @@ class StoreDetailActivity : AppCompatActivity() {
                 textDetailType.text = if(it.getString("type") == "0001") "셀프빨래방" else "세탁소"
                 textDetailNumber.text = it.getString("number")
                 textDetailAddress.text = it.getString("address")
+
+                var isMarked = kRealm(RealmTable.BOOKMARK).where(RealmLaundry::class.java)
+                        .equalTo("id", itemId).findAll().isNotEmpty()
+                imageDetailFavorite.setColorFilter(
+                        getColor(if(isMarked) R.color.switchActivate else R.color.addressTextColor)
+                )
+
+                imageDetailFavorite.setOnClickListener { icon ->
+                    if(isMarked) {
+                        (icon as ImageView).setColorFilter(getColor(R.color.addressTextColor))
+                        kDeleteBookmark(itemId)
+                    } else {
+                        (icon as ImageView).setColorFilter(getColor(R.color.switchActivate))
+                        kAddBookamrk(itemId)
+                    }
+
+                    isMarked = !isMarked
+                }
 
                 val query = it.reference.collection(Table.REVIEW.id).orderBy("time", Query.Direction.DESCENDING)
                 val options = FirestoreRecyclerOptions.Builder<ReviewData>().setQuery(query, ReviewData::class.java).build()

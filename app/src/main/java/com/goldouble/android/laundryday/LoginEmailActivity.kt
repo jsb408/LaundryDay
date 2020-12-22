@@ -2,14 +2,16 @@ package com.goldouble.android.laundryday
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.goldouble.android.laundryday.databinding.ActivityLoginEmailBinding
+import com.goldouble.android.laundryday.db.RealmLaundry
 import com.google.firebase.FirebaseException
+import java.util.*
 
 class LoginEmailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginEmailBinding
@@ -48,8 +50,38 @@ class LoginEmailActivity : AppCompatActivity() {
                             .putString("password", binding.editTextPassword.text.toString())
                             .apply()
 
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finishAffinity()
+                        kFirestore.collection(Table.MEMBERS.id).document(kAuth.currentUser!!.email!!).get().addOnSuccessListener { member ->
+                            val bookmarks = member["bookmarks"] as List<HashMap<String, Any>>?
+                            val realm = kRealm(RealmTable.BOOKMARK)
+
+                            bookmarks?.let { list ->
+                                list.forEach { bookmark ->
+                                    val isMarked = realm.where(RealmLaundry::class.java).equalTo("id", bookmark["id"] as String).findAll().isNotEmpty()
+                                    if (!isMarked) {
+                                        realm.apply {
+                                            beginTransaction()
+                                            createObject(RealmLaundry::class.java).apply {
+                                                id = bookmark["id"] as String
+                                                time = bookmark["time"] as Date
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            val bookmarkArray = arrayListOf<Map<String, Any>>()
+                            realm.where(RealmLaundry::class.java).findAll().forEach { data ->
+                                bookmarkArray.add(mapOf(
+                                        "id" to data.id,
+                                        "time" to data.time
+                                ))
+                            }
+
+                            member.reference.update("bookmarks", bookmarkArray)
+
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finishAffinity()
+                        }
                     }.addOnFailureListener { e -> //실패하면
                         //에러메시지 표시
                         Toast.makeText(it.context, e.localizedMessage, Toast.LENGTH_SHORT).show()

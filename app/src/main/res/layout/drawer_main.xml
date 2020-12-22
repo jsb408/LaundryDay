@@ -102,10 +102,7 @@
         android:layout_marginTop="5dp"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/labelDrawerBookmarks">
-
-        <include layout="@layout/item_drawer_main" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/labelDrawerBookmarks"/>
 
     <TextView
         android:id="@+id/textView"
