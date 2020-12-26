@@ -23,11 +23,11 @@ class StoreReviewListRecyclerViewAdapter(private val parentBinding: ActivityStor
         val countText = "${itemCount}건"
         parentBinding.textDetailReviewCount.text = countText
 
-        totalRating += snapshots.getSnapshot(position).getDouble("rate") ?: 0.0
+        totalRating += model.rate
         parentBinding.textDetailReviewAvg.text = DecimalFormat("0.0").format(totalRating / itemCount)
 
         model.id = snapshots.getSnapshot(position).id
-        snapshots[position].writer?.get()?.addOnSuccessListener {
+        model.writer?.get()?.addOnSuccessListener {
             model.nickname = it.getString("nickname")
             holder.bindData(model)
         }

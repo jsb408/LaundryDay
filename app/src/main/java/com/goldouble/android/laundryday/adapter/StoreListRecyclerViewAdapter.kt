@@ -37,11 +37,8 @@ class StoreListRecyclerViewAdapter(val latLng: LatLng) : RecyclerView.Adapter<St
                 val distanceText = "${data.distance(latLng).toInt()}m"
                 textStoreItemDistance.text = distanceText
 
-                var isMarked = kRealm(RealmTable.BOOKMARK).where(RealmLaundry::class.java)
-                        .equalTo("id", data.id).findAll().isNotEmpty()
-                imageStoreItemFavorite.setColorFilter(
-                        getColor(binding.root.context, if(isMarked) R.color.switchActivate else R.color.addressTextColor)
-                )
+                var isMarked = kRealm(RealmTable.BOOKMARK).where(RealmLaundry::class.java).equalTo("id", data.id).findAll().isNotEmpty()
+                imageStoreItemFavorite.setColorFilter(getColor(binding.root.context, if(isMarked) R.color.switchActivate else R.color.addressTextColor))
 
                 imageStoreItemFavorite.setOnClickListener { icon ->
                     if(isMarked) {

@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LaundryDay">
-        <activity android:name=".WriteReviewActivity"></activity>
+        <activity android:name=".ReportActivity"></activity>
+        <activity android:name=".MyReviewActivity" />
+        <activity android:name=".WriteReviewActivity" />
         <activity android:name=".StoreDetailActivity" />
         <activity android:name=".StoreMapActivity" />
         <activity android:name=".LoginEmailActivity" />

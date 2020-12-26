@@ -162,11 +162,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/labelRegistrationPasswordConfirm" />
 
             <TextView
+                android:id="@+id/labelRegistrationPasswordConfirmInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/registrationCondition"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@+id/labelRegistrationPasswordInfo"
+                app:layout_constraintTop_toBottomOf="@+id/editTextRegistrationPasswordConfirm" />
+
+            <TextView
                 android:id="@+id/labelRegistrationName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="이름"
+                android:text="닉네임"
                 app:layout_constraintStart_toStartOf="@+id/labelRegistrationPasswordConfirm"
                 app:layout_constraintTop_toBottomOf="@id/editTextRegistrationPasswordConfirm" />
 
@@ -182,6 +191,17 @@
                 app:layout_constraintStart_toStartOf="@+id/editTextRegistrationPasswordConfirm"
                 app:layout_constraintTop_toBottomOf="@+id/labelRegistrationName" />
 
+            <TextView
+                android:id="@+id/labelRegistrationNameInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/registrationCondition"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@+id/labelRegistrationPasswordConfirmInfo"
+                app:layout_constraintTop_toBottomOf="@+id/editTextRegistrationName" />
+
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
@@ -190,6 +210,7 @@
         style="@style/BottomButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:text="가입하기"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -91,13 +91,13 @@ class StoreDetailActivity : AppCompatActivity() {
                     isMarked = !isMarked
                 }
 
-                val query = it.reference.collection(Table.REVIEW.id).orderBy("time", Query.Direction.DESCENDING)
+                val query = kFirestore.collection(Table.REVIEW.id).whereEqualTo("laundry", it.reference).orderBy("time", Query.Direction.DESCENDING)
                 val options = FirestoreRecyclerOptions.Builder<ReviewData>().setQuery(query, ReviewData::class.java).build()
                 val reviewListAdapter = StoreReviewListRecyclerViewAdapter(binding, options)
 
                 recyclerViewDetailReview.apply {
                     adapter = reviewListAdapter
-                    layoutManager = LinearLayoutManager(binding.root.context)
+                    layoutManager = LinearLayoutManager(this@StoreDetailActivity)
                 }
 
                 reviewListAdapter.startListening()

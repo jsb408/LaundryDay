@@ -8,11 +8,20 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.goldouble.android.laundryday.databinding.ActivityRegistrationBinding
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import java.util.regex.Pattern
 
 class RegistrationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegistrationBinding
+
+    private val correctMap = hashMapOf(
+            "email" to false,
+            "password" to false,
+            "confirm" to false,
+            "nickname" to false
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +30,58 @@ class RegistrationActivity : AppCompatActivity() {
 
         supportActionBar?.title = "회원가입"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        binding.editTextRegistrationEmail.addTextChangedListener {
+            if(!android.util.Patterns.EMAIL_ADDRESS.matcher(it.toString()).matches()) {
+                binding.labelRegistrationEmailInfo.setTextColor(getColor(R.color.registrationWarning))
+                binding.labelRegistrationEmailInfo.text = "잘못된 형식입니다."
+                correctMap["email"] = false
+            } else {
+                binding.labelRegistrationEmailInfo.setTextColor(getColor(R.color.registrationPass))
+                binding.labelRegistrationEmailInfo.text = "올바른 형식입니다."
+                correctMap["email"] = true
+            }
+            binding.buttonRegistration.isEnabled = !correctMap.containsValue(false)
+        }
+
+        binding.editTextRegistrationPassword.addTextChangedListener {
+            if(!Pattern.matches("^(?=.*[0-9])(?=.*[~!?@#$%\\^&*()-])(?=.*[a-zA-Z]).{8,}$", it.toString())) {
+                binding.labelRegistrationPasswordInfo.setTextColor(getColor(R.color.registrationWarning))
+                binding.labelRegistrationPasswordInfo.text = "잘못된 형식입니다."
+                correctMap["password"] = false
+            } else {
+                binding.labelRegistrationPasswordInfo.setTextColor(getColor(R.color.registrationPass))
+                binding.labelRegistrationPasswordInfo.text = "올바른 형식입니다."
+                correctMap["password"] = true
+            }
+            binding.buttonRegistration.isEnabled = !correctMap.containsValue(false)
+        }
+
+        binding.editTextRegistrationPasswordConfirm.addTextChangedListener {
+            if(it.toString() != binding.editTextRegistrationPassword.text.toString()) {
+                binding.labelRegistrationPasswordConfirmInfo.setTextColor(getColor(R.color.registrationWarning))
+                binding.labelRegistrationPasswordConfirmInfo.text = "비밀번호가 일치하지 않습니다."
+                correctMap["confirm"] = false
+            } else {
+                binding.labelRegistrationPasswordConfirmInfo.setTextColor(getColor(R.color.registrationPass))
+                binding.labelRegistrationPasswordConfirmInfo.text = "비밀번호가 일치합니다."
+                correctMap["confirm"] = true
+            }
+            binding.buttonRegistration.isEnabled = !correctMap.containsValue(false)
+        }
+
+        binding.editTextRegistrationName.addTextChangedListener {
+            if(binding.editTextRegistrationName.text.length > 10) {
+                binding.labelRegistrationNameInfo.setTextColor(getColor(R.color.registrationWarning))
+                binding.labelRegistrationNameInfo.text = "닉네임이 너무 깁니다."
+                correctMap["nickname"] = false
+            } else {
+                binding.labelRegistrationNameInfo.setTextColor(getColor(R.color.registrationPass))
+                binding.labelRegistrationNameInfo.text = "사용 가능한 닉네임입니다."
+                correctMap["nickname"] = true
+            }
+            binding.buttonRegistration.isEnabled = !correctMap.containsValue(false)
+        }
 
         binding.radioGroupRegistrationType.check(R.id.radioRegistrationNormal)
 
