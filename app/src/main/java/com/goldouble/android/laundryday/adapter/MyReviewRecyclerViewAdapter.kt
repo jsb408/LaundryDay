@@ -11,6 +11,8 @@ import com.goldouble.android.laundryday.StoreDetailActivity
 import com.goldouble.android.laundryday.databinding.ItemMyReviewBinding
 import com.goldouble.android.laundryday.db.LaundryData
 import com.goldouble.android.laundryday.db.ReviewData
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MyReviewRecyclerViewAdapter(options: FirestoreRecyclerOptions<ReviewData>) : FirestoreRecyclerAdapter<ReviewData, MyReviewRecyclerViewAdapter.ItemViewHolder>(options) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -40,6 +42,7 @@ class MyReviewRecyclerViewAdapter(options: FirestoreRecyclerOptions<ReviewData>)
                 ratingBarMyReview.rating = review.rate
                 textMyReviewAddress.text = laundry.address
                 textMyReviewContent.text = review.content
+                textMyReviewDate.text = SimpleDateFormat("yyyy.MM.dd HH:mm 작성", Locale.getDefault()).format(review.time)
             }
         }
     }

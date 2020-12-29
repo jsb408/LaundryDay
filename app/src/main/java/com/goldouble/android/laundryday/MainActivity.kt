@@ -57,6 +57,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        kAuth.currentUser?.email?.let {
+            kFirestore.collection(Table.MEMBERS.id).document(it).get().addOnCompleteListener { task ->
+                if (!task.result.exists()) kAuth.signOut()
+            }
+        }
+
         bottomSheetBehavior = BottomSheetBehavior.from(binding.contentMain.bottomSheetMain.root).apply {
             halfExpandedRatio = 0.3f
             isDraggable = false
@@ -77,7 +83,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         checkPermission(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
         fusedLocationClient.lastLocation.addOnSuccessListener {
-            currentLocation = LatLng(it)
+            try {
+                currentLocation = LatLng(it)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             mapFragment.getMapAsync(this)
         }
 
@@ -274,6 +284,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     buttonDrawerCall.setOnClickListener { _ ->
                         startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${it.getString("number")}")))
                     }
+                    buttonDrawerMap.setOnClickListener { _ ->
+                        val latLng = it.getGeoPoint("latLng")!!
+                        try {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("nmaps://route/public?dlat=${latLng.latitude}&dlng=${latLng.longitude}&dname=${it.getString("name")}&appname=$packageName")))
+                        } catch (e: Exception) {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=${latLng.latitude},${latLng.longitude}")))
+                        }
+                    }
                 }
             }
 
@@ -308,6 +326,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                     buttonDrawerCall.setOnClickListener { _ ->
                         startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${it.getString("number")}")))
+                    }
+                    buttonDrawerMap.setOnClickListener { _ ->
+                        val latLng = it.getGeoPoint("latLng")!!
+                        try {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("nmaps://route/public?dlat=${latLng.latitude}&dlng=${latLng.longitude}&dname=${it.getString("name")}&appname=$packageName")))
+                        } catch (e: Exception) {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=${latLng.latitude},${latLng.longitude}")))
+                        }
                     }
                 }
             }

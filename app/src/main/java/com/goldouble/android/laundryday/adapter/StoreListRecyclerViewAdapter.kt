@@ -13,29 +13,37 @@ import com.goldouble.android.laundryday.databinding.ItemStoreListBinding
 import com.goldouble.android.laundryday.db.LaundryData
 import com.goldouble.android.laundryday.db.RealmLaundry
 import com.naver.maps.geometry.LatLng
+import java.text.DecimalFormat
 
-class StoreListRecyclerViewAdapter(val latLng: LatLng) : RecyclerView.Adapter<StoreListRecyclerViewAdapter.ItemViewHolder>() {
+open class StoreListRecyclerViewAdapter(val latLng: LatLng) : RecyclerView.Adapter<StoreListRecyclerViewAdapter.ItemViewHolder>() {
     private val data = MainActivity.laundryList.sortedBy { it.distance(latLng) }
 
     override fun getItemCount(): Int = data.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreListRecyclerViewAdapter.ItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = ItemStoreListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: StoreListRecyclerViewAdapter.ItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bindData(data[position])
     }
 
-    inner class ItemViewHolder(val binding: ItemStoreListBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ItemViewHolder(val binding: ItemStoreListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindData(data: LaundryData) {
             binding.apply {
+                kFirestore.collection(Table.REVIEW.id).whereEqualTo("laundry", kFirestore.collection(Table.LAUNDRY.id).document(data.id)).get().addOnSuccessListener { reviews ->
+                    val avg = reviews.sumByDouble { it.getDouble("rate") ?: 0.0 } / reviews.size()
+                    val countText = "(${reviews.size()})"
+
+                    textStoreItemRatingAvg.text = if(reviews.size() > 0) DecimalFormat("0.0").format(avg) else "0.0"
+                    ratingBarStroeItem.rating = avg.toFloat()
+                    textStoreItemRatingCount.text = countText
+                }
+
                 textStoreItemName.text = data.name
                 textStoreItemAddress.text = data.address
-
-                val distanceText = "${data.distance(latLng).toInt()}m"
-                textStoreItemDistance.text = distanceText
+                textStoreItemDistance.text = distanceText(data.distance(latLng))
 
                 var isMarked = kRealm(RealmTable.BOOKMARK).where(RealmLaundry::class.java).equalTo("id", data.id).findAll().isNotEmpty()
                 imageStoreItemFavorite.setColorFilter(getColor(binding.root.context, if(isMarked) R.color.switchActivate else R.color.addressTextColor))
@@ -62,5 +70,7 @@ class StoreListRecyclerViewAdapter(val latLng: LatLng) : RecyclerView.Adapter<St
                 }
             }
         }
+
+        private fun distanceText(distance: Double): String = DecimalFormat(if(distance > 1000) "#,##0km" else "#,##0m").format(distance / (if(distance > 1000) 1000 else 1))
     }
 }

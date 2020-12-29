@@ -9,6 +9,8 @@ import com.goldouble.android.laundryday.databinding.ActivityStoreDetailBinding
 import com.goldouble.android.laundryday.databinding.ItemReviewBinding
 import com.goldouble.android.laundryday.db.ReviewData
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class StoreReviewListRecyclerViewAdapter(private val parentBinding: ActivityStoreDetailBinding, options: FirestoreRecyclerOptions<ReviewData>)
     : FirestoreRecyclerAdapter<ReviewData, StoreReviewListRecyclerViewAdapter.ItemViewHolder>(options) {
@@ -37,9 +39,23 @@ class StoreReviewListRecyclerViewAdapter(private val parentBinding: ActivityStor
     inner class ItemViewHolder(private val binding: ItemReviewBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindData(data: ReviewData) {
             binding.apply {
+                textReviewTime.text = timeText(data.time)
                 textReviewName.text = data.nickname
                 textReviewContent.text = data.content
                 ratingBarReview.rating = data.rate
+            }
+        }
+
+        fun timeText(time: Date): String {
+            val now = Date().time
+            val date = time.time
+
+            return when(val second = (now - date) / 1000) {
+                in 0..60 -> "${second}초 전"
+                in 60..3600 -> "${second / 60}분 전"
+                in 3600..86400 -> "${second / 3600}시간 전"
+                in 86400..2592000 -> "${second / 86400}일 전"
+                else -> SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.getDefault()).format(time)
             }
         }
     }

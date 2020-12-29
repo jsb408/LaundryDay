@@ -27,19 +27,19 @@
 
         <TextView
             android:id="@+id/textMainName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="크린셀프세탁소"
             android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageMainBookmark"
             app:layout_constraintEnd_toStartOf="@+id/imageMainPhone"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/imageMainBookmark"
-            app:layout_constraintTop_toTopOf="@+id/imageMainBookmark"
-            android:maxLines="1"
-            android:ellipsize="end"/>
+            app:layout_constraintTop_toTopOf="@+id/imageMainBookmark" />
 
         <ImageView
             android:id="@+id/imageMainPhone"

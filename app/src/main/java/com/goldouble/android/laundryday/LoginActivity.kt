@@ -1,14 +1,33 @@
 package com.goldouble.android.laundryday
 
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.appcompat.app.AppCompatActivity
 import com.goldouble.android.laundryday.databinding.ActivityLoginBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
+    private val googleLoginLauncher = registerForActivityResult(GoogleLoginResultContract()) { idToken ->
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        kAuth.signInWithCredential(credential).addOnSuccessListener {
+            Log.d("LOGIN", it.user?.email.toString())
+            kFirestore.collection(Table.MEMBERS.id).document(it.user!!.email!!).get().addOnCompleteListener { task ->
+                startActivity(Intent(this, if(task.result.exists()) MainActivity::class.java else RegistrationActivity::class.java)
+                        .putExtra("email", it.user!!.email!!)
+                        .putExtra("type", "google"))
+                finishAffinity()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +36,11 @@ class LoginActivity : AppCompatActivity() {
 
         supportActionBar?.title = "로그인"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail().build()
+        val googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
 
         binding.buttonLoginKakao.setOnClickListener {
             Toast.makeText(this, "준비중입니다", Toast.LENGTH_SHORT).show()
@@ -27,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.buttonLoginGoogle.setOnClickListener {
-            Toast.makeText(this, "준비중입니다", Toast.LENGTH_SHORT).show()
+            googleLoginLauncher.launch(googleSignInClient.signInIntent)
         }
 
         binding.buttonLoginEmail.setOnClickListener {
@@ -45,5 +69,21 @@ class LoginActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    inner class GoogleLoginResultContract : ActivityResultContract<Intent, String>() {
+        override fun createIntent(context: Context, input: Intent): Intent = input
+
+        override fun parseResult(resultCode: Int, intent: Intent?): String {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                Log.d("Google Login", "firebaseAuthWithGoogle: " + account.id)
+                return account.idToken!!
+            } catch(e: ApiException) {
+                e.printStackTrace()
+            }
+            return ""
+        }
     }
 }
