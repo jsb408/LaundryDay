@@ -12,6 +12,7 @@ import com.goldouble.android.laundryday.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginActivity : AppCompatActivity() {
@@ -21,12 +22,15 @@ class LoginActivity : AppCompatActivity() {
         kAuth.signInWithCredential(credential).addOnSuccessListener {
             Log.d("LOGIN", it.user?.email.toString())
             kFirestore.collection(Table.MEMBERS.id).document(it.user!!.email!!).get().addOnCompleteListener { task ->
-                startActivity(Intent(this, if(task.result.exists()) MainActivity::class.java else RegistrationActivity::class.java)
+                if(task.result.exists()) finish()
+                else signInWithEmailLauncher.launch(Intent(this, LoginEmailActivity::class.java)
                         .putExtra("email", it.user!!.email!!)
                         .putExtra("type", "google"))
-                finishAffinity()
             }
         }
+    }
+    private val signInWithEmailLauncher = registerForActivityResult(SignInWithEmailContract()) { user ->
+        user?.let { finish() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.buttonLoginEmail.setOnClickListener {
-            startActivity(Intent(this, LoginEmailActivity::class.java))
+            signInWithEmailLauncher.launch(Intent(this, LoginEmailActivity::class.java))
         }
 
         binding.labelLoginRegistration.setOnClickListener {
@@ -84,6 +88,14 @@ class LoginActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
             return ""
+        }
+    }
+
+    inner class SignInWithEmailContract : ActivityResultContract<Intent, FirebaseUser?>() {
+        override fun createIntent(context: Context, input: Intent): Intent = input
+
+        override fun parseResult(resultCode: Int, intent: Intent?): FirebaseUser? {
+            return kAuth.currentUser
         }
     }
 }

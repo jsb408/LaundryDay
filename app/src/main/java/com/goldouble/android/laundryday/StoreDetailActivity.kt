@@ -56,7 +56,7 @@ class StoreDetailActivity : AppCompatActivity() {
                         .putExtra("storeName", it.getString("name"))
                         .putExtra("storeId", itemId))
                 } ?: run {
-                    AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+                    AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
                         .setTitle("로그인이 필요합니다")
                         .setMessage("로그인 화면으로 들어가시겠습니까?")
                         .setPositiveButton("예") { _, _ ->
@@ -76,7 +76,7 @@ class StoreDetailActivity : AppCompatActivity() {
                 var isMarked = kRealm(RealmTable.BOOKMARK).where(RealmLaundry::class.java)
                         .equalTo("id", itemId).findAll().isNotEmpty()
                 imageDetailFavorite.setColorFilter(
-                        getColor(if(isMarked) R.color.switchActivate else R.color.addressTextColor)
+                        getColor(if(isMarked) R.color.favoriteButtonColor else R.color.addressTextColor)
                 )
 
                 imageDetailFavorite.setOnClickListener { icon ->
@@ -84,7 +84,7 @@ class StoreDetailActivity : AppCompatActivity() {
                         (icon as ImageView).setColorFilter(getColor(R.color.addressTextColor))
                         kDeleteBookmark(itemId)
                     } else {
-                        (icon as ImageView).setColorFilter(getColor(R.color.switchActivate))
+                        (icon as ImageView).setColorFilter(getColor(R.color.favoriteButtonColor))
                         kAddBookamrk(itemId)
                     }
 

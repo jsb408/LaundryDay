@@ -1,6 +1,5 @@
 package com.goldouble.android.laundryday
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -138,9 +137,7 @@ class RegistrationActivity : AppCompatActivity() {
                             "email" to user.email!!
                     )
             )
-
-            startActivity(Intent(baseContext, MainActivity::class.java))
-            finishAffinity()
+            finish()
         }
     }
 

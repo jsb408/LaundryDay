@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.LaundryDay" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorPrimary">@color/switchActivate</item>
         <item name="colorPrimaryVariant">@android:color/white</item>
         <item name="colorOnPrimary">@android:color/white</item>
         <!-- Secondary brand color. -->
@@ -12,10 +12,16 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="actionBarTheme">@style/ActionBarStyle</item>
         <!-- Customize your theme here. -->
-        <item name="actionBarTheme">@style/Theme.LaundryDay.ActionBarStyle</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:buttonStyle">@style/CustomButtonStyle</item>
+        <item name="ratingBarStyle">@style/RatingBarStyle</item>
+    </style>
+
+    <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="actionMenuTextColor">@color/switchActivate</item>
     </style>
 
     <style name="CustomButtonStyle" parent="android:Widget.Material.Light.Button">
@@ -42,5 +48,10 @@
         <item name="android:layout_marginVertical">3dp</item>
         <item name="android:textAlignment">textStart</item>
         <item name="android:paddingStart">68dp</item>
+    </style>
+
+    <style name="RatingBarStyle" parent="@android:style/Widget.Material.Light.RatingBar">
+        <item name="android:progressTint">@color/ratingBarColor</item>
+        <item name="android:secondaryProgressTint">@color/ratingBarColor</item>
     </style>
 </resources>

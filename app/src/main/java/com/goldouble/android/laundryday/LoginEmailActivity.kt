@@ -1,7 +1,6 @@
 package com.goldouble.android.laundryday
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -78,9 +77,7 @@ class LoginEmailActivity : AppCompatActivity() {
                             }
 
                             member.reference.update("bookmarks", bookmarkArray)
-
-                            startActivity(Intent(this, MainActivity::class.java))
-                            finishAffinity()
+                            finish()
                         }
                     }.addOnFailureListener { e -> //실패하면
                         //에러메시지 표시

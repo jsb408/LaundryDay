@@ -112,29 +112,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     .putExtra("lat", locationSource.lastLocation?.latitude)
                     .putExtra("lng", locationSource.lastLocation?.longitude))
         }
-
-        kAuth.currentUser?.let {
-            val statusText = "${it.displayName}님 반갑습니다"
-            binding.drawerMain.textDrawerStatus.text = statusText
-            binding.drawerMain.buttonDrawerSignOut.visibility = View.VISIBLE
-            binding.drawerMain.buttonDrawerSignOut.setOnClickListener {
-                AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-                    .setMessage("로그아웃하시겠습니까?")
-                    .setPositiveButton("예") { _, _ ->
-                        kAuth.signOut()
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finishAffinity()
-                    }
-                    .setNegativeButton("아니오") { _, _ -> }
-                    .show()
-            }
-        } ?: run {
-            binding.drawerMain.textDrawerStatus.setOnClickListener {
-                startActivity(Intent(this, LoginActivity::class.java))
-            }
-            binding.drawerMain.buttonDrawerMyReview.setTextColor(getColor(R.color.addressTextColor))
-            binding.drawerMain.buttonDrawerReport.setTextColor(getColor(R.color.addressTextColor))
-        }
     }
 
     override fun onResume() {
@@ -229,6 +206,21 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setDrawer(location: LatLng) {
         kAuth.currentUser?.let { user ->
+            val statusText = "${user.displayName}님 반갑습니다"
+            binding.drawerMain.textDrawerStatus.text = statusText
+            binding.drawerMain.buttonDrawerSignOut.visibility = View.VISIBLE
+            binding.drawerMain.buttonDrawerSignOut.setOnClickListener {
+                AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
+                        .setMessage("로그아웃하시겠습니까?")
+                        .setPositiveButton("예") { _, _ ->
+                            kAuth.signOut()
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finishAffinity()
+                        }
+                        .setNegativeButton("아니오") { _, _ -> }
+                        .show()
+            }
+
             binding.drawerMain.buttonDrawerMyReview.setTextColor(getColor(android.R.color.black))
             binding.drawerMain.buttonDrawerReport.setTextColor(getColor(android.R.color.black))
 
@@ -249,6 +241,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.drawerMain.buttonDrawerReport.setOnClickListener {
                 startActivity(Intent(this, ReportActivity::class.java))
             }
+        } ?: run {
+            binding.drawerMain.textDrawerStatus.setOnClickListener {
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+            binding.drawerMain.buttonDrawerMyReview.setTextColor(getColor(R.color.addressTextColor))
+            binding.drawerMain.buttonDrawerReport.setTextColor(getColor(R.color.addressTextColor))
         }
 
         val bookmarksData = kRealm(RealmTable.BOOKMARK).where(RealmLaundry::class.java).findAll()
@@ -357,13 +355,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         bottomSheet.apply {
-            imageMainBookmark.setColorFilter(getColor(if(isMarked) R.color.switchActivate else R.color.addressTextColor))
+            imageMainBookmark.setColorFilter(getColor(if(isMarked) R.color.favoriteButtonColor else R.color.addressTextColor))
             imageMainBookmark.setOnClickListener { icon ->
                 if(isMarked) {
                     (icon as ImageView).setColorFilter(getColor(R.color.addressTextColor))
                     kDeleteBookmark(data.id)
                 } else {
-                    (icon as ImageView).setColorFilter(getColor(R.color.switchActivate))
+                    (icon as ImageView).setColorFilter(getColor(R.color.favoriteButtonColor))
                     kAddBookamrk(data.id)
                 }
 
