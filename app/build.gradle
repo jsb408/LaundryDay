@@ -54,7 +54,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
     //Naver Map API
-    implementation 'com.naver.maps:map-sdk:3.10.0'
+    implementation 'com.naver.maps:map-sdk:3.11.0'
     implementation 'gun0912.ted:tedclustering-naver:1.0.2'
 
     //Google Firebase
